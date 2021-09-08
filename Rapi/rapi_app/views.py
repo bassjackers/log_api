@@ -1,15 +1,15 @@
 from django.http import response
+from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework import status, viewsets, mixins
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
-from django.views.decorators.csrf import csrf_exempt
-from django.http.response import HttpResponse, JsonResponse
 from rest_framework.response import Response
 
 from .models import LogData
-from .serialzers import LogDataSerializer
+from .serializers import LogDataSerializer
 from .api import get_logdata
 
 # Create your views here.
@@ -29,15 +29,17 @@ from .api import get_logdata
 #         return JsonResponse("추가 실패", safe=False)
 
 class LogDataViewSet(
-    mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+    mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet,
+    mixins.CreateModelMixin
 ):
     serializer_class = LogDataSerializer
     queryset = LogData.objects.all()
 
     def get(self, request, *args, **kwargs):
-        return self.list(request)
+        return self.list(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
-        return self.create(request)
+        return self.create(request, *args, **kwargs)
 
 
 
