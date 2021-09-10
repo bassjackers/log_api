@@ -8,25 +8,13 @@ from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 
+import requests
+
 from .models import LogData
 from .serializers import LogDataSerializer
 from .api import get_logdata
 
 # Create your views here.
-
-# @csrf_exempt
-# def LogdataApi(request, id=0):
-#     if request.method == "GET":
-#         logdatas = LogData.objects.all()
-#         logdatas_serializer = LogDataSerializer(logdatas, many=True)
-#         return JsonResponse(logdatas_serializer.data,safe=False)
-#     elif request.method == "POST":
-#         logdata_dt = JSONParser().parse(request)
-#         logdatas_serializer = LogDataSerializer(data=logdata_dt)
-#         if logdatas_serializer.is_valid():
-#             logdatas_serializer.save()
-#             return JsonResponse("성공적으로 추가되었습니다.",safe=False)
-#         return JsonResponse("추가 실패", safe=False)
 
 class LogDataViewSet(
     mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet,
@@ -41,7 +29,22 @@ class LogDataViewSet(
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
+    # r = requests.post(queryset[1])
+    # print(r.content)
 
+# @csrf_exempt
+# def LogdataApi(request, id=0):
+#     if request.method == "GET":
+#         logdatas = LogData.objects.all()
+#         logdatas_serializer = LogDataSerializer(logdatas, many=True)
+#         return JsonResponse(logdatas_serializer.data,safe=False)
+#     elif request.method == "POST":
+#         logdata_dt = JSONParser().parse(request)
+#         logdatas_serializer = LogDataSerializer(data=logdata_dt)
+#         if logdatas_serializer.is_valid():
+#             logdatas_serializer.save()
+#             return JsonResponse("성공적으로 추가되었습니다.",safe=False)
+#         return JsonResponse("추가 실패", safe=False)
 
 # @api_view(['GET'])
 # def get_api(request):
